@@ -14,7 +14,17 @@ services:
     privileged: true
     depends_on:
       - db
-
+  
+  reverse-proxy:
+    image: nginx
+    volumes:
+      - ./certs:/etc/certs/
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8443:8443"
+    links:
+      - posbox:posbox
+  
   db:
     image: postgres:9.5
     restart: unless-stopped
